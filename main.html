@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: heartBeat 1.3s infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        p {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .yes-btn {
+            background-color: #e74c3c;
+            color: white;
+            min-width: 120px;
+        }
+
+        .yes-btn:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .no-btn {
+            background-color: #95a5a6;
+            color: white;
+            min-width: 120px;
+        }
+
+        .no-btn:hover {
+            background-color: #7f8c8d;
+        }
+
+        .response {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: none;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .response.yes {
+            background-color: #d5f4e6;
+            color: #27ae60;
+            display: block;
+        }
+
+        .response.no {
+            background-color: #fadbd8;
+            color: #c0392b;
+            display: block;
+        }
+
+        .hearts {
+            font-size: 2em;
+            margin-top: 20px;
+            animation: float 3s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ Will You Be My Valentine? ❤️</h1>
+        <div class="emoji">💕</div>
+        <p>I really enjoy spending time with you and would love for you to be my valentine!</p>
+        
+        <div class="button-container">
+            <button class="yes-btn" onclick="yesClicked()">Yes! 💖</button>
+            <button class="no-btn" onclick="noHovered()">No</button>
+        </div>
+
+        <div id="response" class="response"></div>
+        <div id="hearts" class="hearts"></div>
+    </div>
+
+    <script>
+        let noButtonClickCount = 0;
+
+        function yesClicked() {
+            const responseDiv = document.getElementById('response');
+            const heartsDiv = document.getElementById('hearts');
+            
+            responseDiv.classList.remove('no');
+            responseDiv.classList.add('yes');
+            responseDiv.textContent = '🎉 You make me so happy! Happy Valentine\'s Day! 🎉';
+            responseDiv.style.display = 'block';
+            
+            heartsDiv.textContent = '💕 💖 💗 💓 💞 💘';
+            
+            // Disable buttons
+            document.querySelectorAll('button').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+            });
+        }
+
+        function noHovered() {
+            const noBtn = document.querySelector('.no-btn');
+            const yesBtn = document.querySelector('.yes-btn');
+            
+            noButtonClickCount++;
+            
+            // Make the no button smaller and harder to click
+            const scale = Math.max(0.3, 1 - (noButtonClickCount * 0.15));
+            noBtn.style.transform = `scale(${scale})`;
+            
+            // Make yes button bigger
+            const yesScale = 1 + (noButtonClickCount * 0.2);
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            // Move the no button randomly
+            const randomX = (Math.random() - 0.5) * 200;
+            const randomY = (Math.random() - 0.5) * 200;
+            noBtn.style.position = 'relative';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            
+            // After many clicks, show a message
+            if (noButtonClickCount > 5) {
+                const responseDiv = document.getElementById('response');
+                responseDiv.classList.remove('yes');
+                responseDiv.classList.add('no');
+                responseDiv.textContent = '😜 You know you want to say yes!';
+                responseDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
