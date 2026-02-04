@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D96281 0%, #F291A3 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
 
         .container {
             text-align: center;
-            background: white;
+            background: #F2B6BB;
             padding: 60px 40px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -43,7 +43,7 @@
         }
 
         h1 {
-            color: #e74c3c;
+            color: #BD2936;
             font-size: 2.5em;
             margin-bottom: 20px;
             animation: heartBeat 1.3s infinite;
@@ -132,7 +132,7 @@
             animation: popIn 0.5s ease-out;
         }
 
-        @keyframes popIn {
+        /* @keyframes popIn {
             from {
                 opacity: 0;
                 transform: scale(0.8);
@@ -140,12 +140,13 @@
             to {
                 opacity: 1;
                 transform: scale(1);
-            }
-        }
+            } */
+        
 
         .response.yes {
-            background-color: #d5f4e6;
-            color: #27ae60;
+            background-color: #F2D0D0;
+            color: #BD2936;
+            font-style: white;
             display: block;
         }
 
@@ -174,11 +175,10 @@
 <body>
     <div class="container">
         <h1>❤️ Will You Be My Valentine? ❤️</h1>
-        <div class="emoji">💕</div>
-        <p>I really enjoy spending time with you and would love for you to be my valentine!</p>
+      <img id="intro-image" src="images.jpg" alt="Planton Heart">
         
         <div class="button-container">
-            <button class="yes-btn" onclick="yesClicked()">Yes! 💖</button>
+            <button class="yes-btn" onclick="yesClicked()">Yes 💖</button>
             <button class="no-btn" onclick="noHovered()">No</button>
         </div>
 
@@ -190,12 +190,21 @@
         let noButtonClickCount = 0;
 
         function yesClicked() {
+
+            document.getElementById('intro-image').style.display = 'none';
+
+             resetButtons();
+
             const responseDiv = document.getElementById('response');
             const heartsDiv = document.getElementById('hearts');
             
             responseDiv.classList.remove('no');
             responseDiv.classList.add('yes');
-            responseDiv.textContent = '🎉 You make me so happy! Happy Valentine\'s Day! 🎉';
+            //responseDiv.textContent = 'Thank you for making my day! You will not regret it 💕 ';
+            responseDiv.innerHTML = `
+                <img src="thankyou.gif" width="300" alt="Patrick">
+                <p class="response-text">Thank you my valentine! You will not regret it 💕 </p>
+            `;
             responseDiv.style.display = 'block';
             
             heartsDiv.textContent = '💕 💖 💗 💓 💞 💘';
@@ -207,37 +216,86 @@
                 btn.style.cursor = 'not-allowed';
             });
         }
-
-        function noHovered() {
+        function resetButtons() {
             const noBtn = document.querySelector('.no-btn');
             const yesBtn = document.querySelector('.yes-btn');
-            
+
+            // Reset click counter
+            noButtonClickCount = 0;
+
+            // Reset size
+            noBtn.style.transform = 'scale(1)';
+            yesBtn.style.transform = 'scale(1)';
+
+            // Reset position
+            noBtn.style.position = 'static';
+            noBtn.style.left = '0';
+            noBtn.style.top = '0';
+
+            // Re-enable buttons
+            document.querySelectorAll('button').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+        }
+
+       function noHovered() {
+
+        document.getElementById('intro-image').style.display = 'none';
+            const noBtn = document.querySelector('.no-btn');
+            const yesBtn = document.querySelector('.yes-btn');
+
             noButtonClickCount++;
-            
-            // Make the no button smaller and harder to click
+
             const scale = Math.max(0.3, 1 - (noButtonClickCount * 0.15));
             noBtn.style.transform = `scale(${scale})`;
-            
-            // Make yes button bigger
-            const yesScale = 1 + (noButtonClickCount * 0.2);
+
+            const yesScale = 1 + (noButtonClickCount * 0.1);
             yesBtn.style.transform = `scale(${yesScale})`;
-            
-            // Move the no button randomly
+
             const randomX = (Math.random() - 0.5) * 200;
             const randomY = (Math.random() - 0.5) * 200;
             noBtn.style.position = 'relative';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
-            
-            // After many clicks, show a message
-            if (noButtonClickCount > 5) {
-                const responseDiv = document.getElementById('response');
-                responseDiv.classList.remove('yes');
-                responseDiv.classList.add('no');
-                responseDiv.textContent = '😜 You know you want to say yes!';
-                responseDiv.style.display = 'block';
+
+            const responseDiv = document.getElementById('response');
+
+            if (noButtonClickCount === 1) {
+            responseDiv.innerHTML = `<img src="no.jpg" width="375" alt="No">`;
+            } else if (noButtonClickCount === 2) {
+            responseDiv.innerHTML = `
+                <img src="spongeHeart.webp" width="375" alt="Sponge Heart">
+                <p class="response-text">click yes</p>
+            `;
+            } else if (noButtonClickCount === 3) {
+            responseDiv.innerHTML = `
+                <img src="pillowCrying.jpg" width="300" alt="crying pillow">
+                <p class="response-text">please..</p>
+            `;
+            } else if (noButtonClickCount === 4) {
+            responseDiv.innerHTML = `
+                <img src="stop.jpg" width="300" alt="crying Spongebob">
+                <p class="response-text">the yes button is right there...</p>
+            `;
+            } else if (noButtonClickCount === 5) {
+            responseDiv.innerHTML = `
+                <img src="squidwardHeart.jpg" width="300" alt="squid">
+                <p class="response-text">...</p>
+            `;
+            } else {
+            responseDiv.innerHTML = `
+                <img src="cryingSpongebob.jpg" width="300" alt="crying Spongebob">
+                <p class="response-text">OKAY ENOUGH 😭 CLICK YES.</p>
+            `;
             }
-        }
+
+            responseDiv.classList.remove('yes');
+            responseDiv.classList.add('no');
+            responseDiv.style.display = 'block';
+            }
+
     </script>
 </body>
 </html>
